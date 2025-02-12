@@ -11924,7 +11924,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1467549412
 Transform:
   m_ObjectHideFlags: 0
@@ -11986,7 +11986,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 0
   m_Mesh: {fileID: 6316878200492802883, guid: c9dccd45c554a2e4185f401dc46a8406, type: 3}
   m_Bones:
