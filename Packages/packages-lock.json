@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.soralab.uniartpower": {
+      "version": "https://github.com/UsagiHime5566/UniArtpower.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "90b661b0fdceb54a615880c04e9a4b07acb36c11"
+    },
     "com.unity.collab-proxy": {
       "version": "2.5.2",
       "depth": 0,
