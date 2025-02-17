@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class InteractMode : HimeLib.SingletonMono<InteractMode>
 {
-    public SnakeMove m_snakemove;
-    public VFXSwipe vfxSwipe;
+    [HimeLib.HelpBox] public string tip = "按下Tab鍵切換模式";
     public enum Mode
     {
         Dance = 1,  //可操作 視角不可移動 (舉手後，決定操作者)
@@ -25,18 +24,22 @@ public class InteractMode : HimeLib.SingletonMono<InteractMode>
             
             SetGameMode(CurrentMode);
         }
-
-        if(Input.GetKeyDown(KeyCode.Space)){
-            vfxSwipe.BurstActionSwipe();
-        }
     }
 
     public void SetGameMode(Mode mode){
-        if(mode == Mode.Artist){
-            m_snakemove.TurnController(false);
-        } else {
-            m_snakemove.TurnController(true);
+        if(mode!=CurrentMode)
+        {
+            if (mode == Mode.Artist)
+            {
+                SnakeMove.instance.TurnController(false);
+                SnakeMove.instance.BornDragonBall();
+            }
+            else
+            {
+                SnakeMove.instance.TurnController(true);
+                SnakeMove.instance.ResetControlBallPos();
+            }
+            CurrentMode = mode;
         }
-        CurrentMode = mode;
     }
 }
