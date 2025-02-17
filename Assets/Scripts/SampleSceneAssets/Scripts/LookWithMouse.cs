@@ -45,10 +45,11 @@ public class LookWithMouse : MonoBehaviour
         mouseY *= mouseSensitivity * k_MouseSensitivityMultiplier;
 #else
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * k_MouseSensitivityMultiplier;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * k_MouseSensitivityMultiplier;
+        //float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * k_MouseSensitivityMultiplier;
+        float mouseY = (Input.mousePosition.y - Screen.height / 2) / (Screen.height / 2) * 90f;
 #endif
 
-        xRotation -= mouseY;
+        xRotation = -mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
