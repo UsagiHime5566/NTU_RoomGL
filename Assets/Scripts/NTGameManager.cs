@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 //using TriLibCore.SFB;
 
 public class NTGameManager : MonoBehaviour
@@ -14,16 +13,6 @@ public class NTGameManager : MonoBehaviour
         //     LoadVideo(0, TXT_Wall);
         //     //Debug.Log("click event");
         // });
-    }
-
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Alpha9)){
-            SceneManager.LoadScene(0);
-        }
-        if(Input.GetKeyDown(KeyCode.Alpha0)){
-            SceneManager.LoadScene(1);
-        }
     }
 
     void LoadVideo(int index, Text txt)
