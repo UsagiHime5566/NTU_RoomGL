@@ -13882,9 +13882,11 @@ MonoBehaviour:
   - {fileID: 663096735}
   TargetDebugPointModel: {fileID: 24742622}
   TargetDebugPointWorld: {fileID: 496616868}
+  worldDistance: 25
+  worldDistanceMin: 15
+  worldDistanceMax: 25
   MousePointInModel: {x: 0, y: 0, z: 0}
   MousePointInWorld: {x: 0, y: 0, z: 0}
-  worldDistance: 25
 --- !u!4 &1536281721
 Transform:
   m_ObjectHideFlags: 0

@@ -13,6 +13,8 @@ public class LookWithMouse : MonoBehaviour
     public float mouseSensitivity = 100f;
     public float mouseRotateMaxAngle = 90f;
 
+    public float mouseRotateOverScreenX = 0.33f;
+
     public Transform playerBody;
 
     float xRotation = 0f;
@@ -48,6 +50,13 @@ public class LookWithMouse : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * k_MouseSensitivityMultiplier;
         //float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * k_MouseSensitivityMultiplier;
         float mouseY = (Input.mousePosition.y - Screen.height / 2) / (Screen.height / 2) * mouseRotateMaxAngle;
+
+        if(Input.mousePosition.x < 0){
+            mouseX = -mouseRotateOverScreenX;
+        }
+        if(Input.mousePosition.x > Screen.width){
+            mouseX = mouseRotateOverScreenX;
+        }
 #endif
 
         xRotation = -mouseY;
