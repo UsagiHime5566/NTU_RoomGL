@@ -44,17 +44,7 @@ public class VRManager : MonoBehaviour
             InteractMode.instance.SetGameMode(InteractMode.Mode.Artist);
         }
 
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = mousePointDistance; // 設定滑鼠在3D空間中的深度
-        Vector3 targetPos = Camera.main.ScreenToWorldPoint(mousePosition);
-        Vector3 finalPos = targetPos;
-
-        SnakeMove.instance.TargetPointSetPos(finalPos);
+        SnakeMove.instance.TargetPointSetPos(exhibitionModel.MousePointInWorld);
         SnakeMove.instance.SetupNewDragonBallMoveSpeed(currentBallMoveSpeed);
-    }
-
-    float distanceXZ(Vector3 point1, Vector3 point2)
-    {
-        return Vector2.Distance(new Vector2(point1.x, point1.z), new Vector2(point2.x, point2.z));
     }
 }

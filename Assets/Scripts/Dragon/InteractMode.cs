@@ -20,26 +20,37 @@ public class InteractMode : HimeLib.SingletonMono<InteractMode>
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.Tab)){
-            CurrentMode = (Mode)(((int)CurrentMode + 1) % 2);
-            
-            SetGameMode(CurrentMode);
+            var nextMode = (Mode)(((int)CurrentMode + 1) % 2);
+            SetGameMode(nextMode);
         }
     }
 
+#if UNITY_EDITOR    
+    void OnValidate() {
+        if(!Application.isPlaying) return;
+        if(SnakeMove.instance == null) return;
+        CheckMode();
+    }
+#endif
+
     public void SetGameMode(Mode mode){
-        if(mode!=CurrentMode)
+        if(mode != CurrentMode)
         {
-            if (mode == Mode.Artist)
-            {
-                SnakeMove.instance.TurnController(false);
-                SnakeMove.instance.BornDragonBall();
-            }
-            else
-            {
-                SnakeMove.instance.TurnController(true);
-                SnakeMove.instance.ResetControlBallPos();
-            }
             CurrentMode = mode;
+            CheckMode();
+        }
+    }
+
+    void CheckMode(){
+        if (CurrentMode == Mode.Artist)
+        {
+            SnakeMove.instance.TurnController(false);
+            SnakeMove.instance.BornDragonBall();
+        }
+        else
+        {
+            SnakeMove.instance.TurnController(true);
+            SnakeMove.instance.ResetControlBallPos();
         }
     }
 }
