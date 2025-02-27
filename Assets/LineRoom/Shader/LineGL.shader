@@ -12,6 +12,8 @@ Shader "Custom/LineGL"
         _GlowWidth ("Glow Width", Range(0.01, 0.3)) = 0.12
         _LineWidth ("Line Width", Range(0.01, 0.1)) = 0.02
         _PointWidth ("Point Width", Range(0.01, 0.2)) = 0.08
+        _ColorSaturation ("Color Saturation", Range(0.0, 2.0)) = 1.0
+        _ColorBrightness ("Color Brightness", Range(0.0, 2.0)) = 1.0
     }
     
     SubShader
@@ -38,6 +40,10 @@ Shader "Custom/LineGL"
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
             };
+            
+            float rand(float2 co);
+            float3 randomColor(float3x3 m);
+            float3 adjustColor(float3 color);
 
             sampler2D _MainTex;
             float4 iMouse;
@@ -47,6 +53,8 @@ Shader "Custom/LineGL"
             float _GlowWidth;
             float _LineWidth;
             float _PointWidth;
+            float _ColorSaturation;
+            float _ColorBrightness;
 
             static int configuration = 0;
             static bool drawdual = true;
@@ -63,15 +71,31 @@ Shader "Custom/LineGL"
             static const float PI =  3.141592654;
             static const float eps = 1e-4;
             
-            static const float3 pcolor0 = float3(1,0,0);
-            static const float3 pcolor1 = float3(0,1,0);
-            static const float3 pcolor2 = float3(1,1,0);
-            static const float3 pcolor3 = float3(0,1,1);
-            static const float3 lcolor0 = pcolor0;
-            static const float3 lcolor1 = pcolor1;
-            static const float3 lcolor2 = pcolor2;
+            static const float3 pcolor0 = randomColor(float3x3(13.91, 47.23, 89.17, 
+                                                              31.73, 67.29, 83.41, 
+                                                              19.13, 53.87, 71.59));
+            static const float3 pcolor1 = randomColor(float3x3(23.47, 59.31, 97.83, 
+                                                              41.67, 79.13, 61.29, 
+                                                              29.71, 43.89, 87.23));
+            static const float3 pcolor2 = randomColor(float3x3(31.57, 67.93, 81.39, 
+                                                              49.21, 73.43, 55.67, 
+                                                              37.39, 51.71, 95.89));
+            static const float3 pcolor3 = randomColor(float3x3(41.31, 79.27, 63.83, 
+                                                              27.49, 53.61, 97.13, 
+                                                              35.93, 47.31, 83.77));
+            static const float3 lcolor0 = randomColor(float3x3(53.17, 71.43, 89.61, 
+                                                              37.89, 61.23, 93.47, 
+                                                              43.71, 83.59, 67.31));
+            static const float3 lcolor1 = randomColor(float3x3(61.93, 83.27, 71.51, 
+                                                              45.67, 89.31, 73.59, 
+                                                              51.43, 77.89, 91.23));
+            static const float3 lcolor2 = randomColor(float3x3(73.41, 91.67, 57.83, 
+                                                              59.23, 81.47, 63.91, 
+                                                              47.59, 69.83, 85.27));
             static const float3 ccolor0 = float3(1,1,1);
-            static const float3 ccolor1 = float3(0,0,1);
+            static const float3 ccolor1 = randomColor(float3x3(67.31, 87.59, 93.43, 
+                                                              51.97, 73.61, 89.23, 
+                                                              41.83, 63.47, 79.91));
             
             
             
@@ -90,9 +114,13 @@ Shader "Custom/LineGL"
               float d = dist(p,m);
               float3 dd = grad(p,m);
               d = abs(d/(p.z*length(dd.xy))); // Normalize for Euclidean distance
+              
+              // 分別計算核心和光暈
               float core = 1.0-smoothstep(ledge0,ledge1,d);
-              float glow = pow(1.0-smoothstep(ledge1,ledge2,d), _GlowPower);
-              return core + _GlowIntensity * glow;
+              float glow = pow(1.0-smoothstep(ledge1,ledge2,d), _GlowPower) * _GlowIntensity;
+              
+              // 使用max來確保光暈不會減弱核心的強度
+              return max(core, glow);
             }
             
             float point0(float3 p, float3 q) {
@@ -100,9 +128,13 @@ Shader "Custom/LineGL"
               if (abs(q.z) < eps) return 0.0;
               p /= p.z; q /= q.z; // Normalize
               float d = distance(p,q);
+              
+              // 分別計算核心和光暈
               float core = 1.0-smoothstep(pedge0,pedge1,d);
-              float glow = pow(1.0-smoothstep(pedge1,pedge2,d), _GlowPower);
-              return core + _GlowIntensity * glow;
+              float glow = pow(1.0-smoothstep(pedge1,pedge2,d), _GlowPower) * _GlowIntensity;
+              
+              // 使用max來確保光暈不會減弱核心的強度
+              return max(core, glow);
             }
             
             float line0(float3 p, float3 q) {
@@ -150,7 +182,8 @@ Shader "Custom/LineGL"
             }
             
             float3 cmix(float3 color0, float3 color1, float level) {
-                return lerp(color0,color1,level);
+                float3 mixedColor = lerp(color0, color1, level);
+                return adjustColor(mixedColor);
             }
 
             v2f vert (appdata v)
@@ -161,6 +194,58 @@ Shader "Custom/LineGL"
                 return o;
             }
             
+            // 添加一個簡單的偽隨機函數
+            float rand(float2 co) {
+                return frac(sin(dot(co, float2(12.9898, 78.233))) * 43758.5453);
+            }
+            
+            float3 getTargetColor(float3x3 m) {
+                // 生成目標顏色，這個函數類似於原來的randomColor
+                float timeScale = 0.2; // 控制新顏色生成的頻率
+                float t = floor(_Time.y * timeScale); // 使用floor來分段時間
+                
+                float2 seed1 = float2(m[0][0] + t, m[0][1] + t);
+                float2 seed2 = float2(m[1][1] + t, m[1][2] + t);
+                float2 seed3 = float2(m[2][2] + t, m[2][0] + t);
+                
+                // 生成更均衡的RGB值，使用不同的時間偏移使三個通道獨立變化
+                float r = rand(seed1) * 0.8 + 0.2;
+                float g = rand(seed2) * 0.8 + 0.2;
+                float b = rand(seed3) * 0.8 + 0.2;
+                
+                return float3(r, g, b);
+            }
+
+            float3 randomColor(float3x3 m) {
+                float timeScale = 0.2; // 與getTargetColor使用相同的timeScale
+                float t = _Time.y * timeScale;
+                float fraction = frac(t); // 獲取小數部分用於插值
+                
+                // 獲取當前和下一個目標顏色
+                float3 currentColor = getTargetColor(m);
+                float3 nextColor = getTargetColor(m + 1.0); // 使用略微不同的矩陣生成下一個顏色
+                
+                // 使用smoothstep使過渡更加平滑
+                float smoothFraction = smoothstep(0.0, 1.0, fraction);
+                
+                // 在兩個顏色之間進行插值
+                return lerp(currentColor, nextColor, smoothFraction);
+            }
+
+            float3 adjustColor(float3 color) {
+                // 計算灰度值
+                float gray = dot(color, float3(0.299, 0.587, 0.114));
+                
+                // 調整飽和度
+                color = lerp(float3(gray, gray, gray), color, _ColorSaturation);
+                
+                // 調整亮度
+                color *= _ColorBrightness;
+                
+                // 確保顏色值在有效範圍內
+                return saturate(color);
+            }
+
             fixed4 frag (v2f i) : SV_Target
             {
               float2 fragCoord = i.uv * iResolution.xy;
