@@ -51,5 +51,8 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "NTU_RoomGL.sln"
+    "dotnet.defaultSolution": "NTU_RoomGL.sln",
+    "files.associations": {
+        "*.glsl": "c"
+    }
 }
