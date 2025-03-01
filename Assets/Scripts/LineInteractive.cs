@@ -113,8 +113,7 @@ public class LineInteractive : MonoBehaviour
             outputPoint.x += planceWidth;
             outputPoint.y -= planceHeight;
         }
-
-        Debug.Log(outputPoint);
+        
         return outputPoint;
     }
 }

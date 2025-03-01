@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.Networking;
@@ -21,6 +20,8 @@ public class VideoGL : MonoBehaviour
     {
         Wall.prepareCompleted += OnVideoPrepared;
         Floor.prepareCompleted += OnVideoPrepared;
+
+        StopPlay();
     }
 
     void Update(){
