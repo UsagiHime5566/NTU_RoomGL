@@ -8,12 +8,14 @@ Shader "Custom/LineGL"
         iMouse ("Mouse Position", Vector) = (0,0,0,0)
         iResolution ("Resolution", Vector) = (1920,1080,0,0)
         _GlowIntensity ("Glow Intensity", Range(0.0, 1.0)) = 0.6
-        _GlowPower ("Glow Power", Range(1.0, 5.0)) = 3.0
+        _GlowPower ("Glow Power", Range(1.0, 8.0)) = 3.0
         _GlowWidth ("Glow Width", Range(0.01, 0.3)) = 0.12
         _LineWidth ("Line Width", Range(0.01, 0.1)) = 0.02
         _PointWidth ("Point Width", Range(0.01, 0.2)) = 0.08
         _ColorSaturation ("Color Saturation", Range(0.0, 2.0)) = 1.0
         _ColorBrightness ("Color Brightness", Range(0.0, 2.0)) = 1.0
+        _Tiling ("Tiling", Vector) = (1,1,0,0)
+        _Offset ("Offset", Vector) = (0,0,0,0)
     }
     
     SubShader
@@ -55,6 +57,8 @@ Shader "Custom/LineGL"
             float _PointWidth;
             float _ColorSaturation;
             float _ColorBrightness;
+            float4 _Tiling;
+            float4 _Offset;
 
             static int configuration = 0;
             static bool drawdual = true;
@@ -190,7 +194,7 @@ Shader "Custom/LineGL"
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv;
+                o.uv = v.uv * _Tiling.xy + _Offset.xy;
                 return o;
             }
             

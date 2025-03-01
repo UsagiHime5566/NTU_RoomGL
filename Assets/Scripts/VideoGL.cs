@@ -21,9 +21,6 @@ public class VideoGL : MonoBehaviour
     {
         Wall.prepareCompleted += OnVideoPrepared;
         Floor.prepareCompleted += OnVideoPrepared;
-
-
-        SetupPlay(0);
     }
 
     void Update(){
@@ -99,29 +96,6 @@ public class VideoGL : MonoBehaviour
             Wall.Play();
             Floor.Play();
             Audio.Play();
-        }
-    }
-
-    void OnApplicationFocus(bool hasFocus)
-    {
-        if (hasFocus)
-        {
-            Debug.Log("應用程序獲得焦點");
-            AudioListener.pause = false;
-
-            if(readyCount == 3){
-                Wall.Play();
-                Floor.Play();
-                Audio.Play();
-            }
-        }
-        else
-        {
-            Debug.Log("應用程序失去焦點");
-            AudioListener.pause = true;
-            Wall.Pause();
-            Floor.Pause();
-            Audio.Pause();
         }
     }
 }

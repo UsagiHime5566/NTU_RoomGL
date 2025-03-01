@@ -1,10 +1,19 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class NTSceneManager : HimeLib.SingletonMono<NTSceneManager>
+public class NTSceneManager : MonoBehaviour
 {
-    protected override void OnSingletonAwake(){
-        MarkAsCrossSceneSingleton();
+    public static NTSceneManager instance;
+    public UIStageIntro uiStageIntro;
+
+    void Awake(){
+        if(instance == null){
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else{
+            Destroy(gameObject);
+        }
     }
 
     void Update()
