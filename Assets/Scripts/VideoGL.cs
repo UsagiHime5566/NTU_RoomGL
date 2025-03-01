@@ -39,6 +39,18 @@ public class VideoGL : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Alpha5)){
             SetupPlay(4);
         }
+        if(Input.GetKeyDown(KeyCode.Alpha6)){
+            StopPlay();
+        }
+    }
+
+    void StopPlay(){
+        Wall.Stop();
+        Floor.Stop();
+        Audio.Stop();
+
+        Wall.targetTexture.Release();
+        Floor.targetTexture.Release();
     }
 
     void SetupPlay(int index){
@@ -92,7 +104,6 @@ public class VideoGL : MonoBehaviour
 
     void ShouldPlay(){
         if(readyCount == 3){
-            AudioListener.pause = false;
             Wall.Play();
             Floor.Play();
             Audio.Play();

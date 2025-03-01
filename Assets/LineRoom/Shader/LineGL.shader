@@ -16,6 +16,7 @@ Shader "Custom/LineGL"
         _ColorBrightness ("Color Brightness", Range(0.0, 2.0)) = 1.0
         _Tiling ("Tiling", Vector) = (1,1,0,0)
         _Offset ("Offset", Vector) = (0,0,0,0)
+        [Toggle] _DrawDual ("Draw Dual", Float) = 1
     }
     
     SubShader
@@ -59,9 +60,9 @@ Shader "Custom/LineGL"
             float _ColorBrightness;
             float4 _Tiling;
             float4 _Offset;
+            float _DrawDual;
 
             static int configuration = 0;
-            static bool drawdual = true;
             
             static const float lwidth = _LineWidth;     // 使用可調整的線寬
             static const float glow_width = _GlowWidth; 
@@ -150,12 +151,12 @@ Shader "Custom/LineGL"
             }
             
             float newpoint(float3 p, float3 q) {
-              if (drawdual) return line0(p,q);
+              if (_DrawDual > 0.5) return line0(p,q);
               else return point0(p,q);
             }
             
             float newline(float3 p, float3 q) {
-              if (drawdual) return point0(p,q);
+              if (_DrawDual > 0.5) return point0(p,q);
               else return line0(p,q);
             }
             

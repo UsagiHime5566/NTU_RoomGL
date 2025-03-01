@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Entrance.unity
+    guid: 57b6df5b21daf2045a310d6166278a0c
+  - enabled: 1
     path: Assets/Scenes/NTU_Model.unity
     guid: edf5256dab15ca04581f5349bb862ed5
   - enabled: 1

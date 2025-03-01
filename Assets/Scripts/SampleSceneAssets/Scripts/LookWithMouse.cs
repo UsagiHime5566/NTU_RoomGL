@@ -19,6 +19,8 @@ public class LookWithMouse : MonoBehaviour
 
     float xRotation = 0f;
 
+    bool working = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +30,12 @@ public class LookWithMouse : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Insert)){
+            working = !working;
+        }
+
+        if(!working) return;
+
 #if ENABLE_INPUT_SYSTEM
         float mouseX = 0, mouseY = 0;
 
