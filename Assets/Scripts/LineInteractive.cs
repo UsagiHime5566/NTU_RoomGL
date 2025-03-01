@@ -61,6 +61,9 @@ public class LineInteractive : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Alpha6)){
             LineRoom.SetActive(true);
         }
+        if(Input.GetKeyDown(KeyCode.Alpha7)){
+            LineRoom.SetActive(false);
+        }
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;

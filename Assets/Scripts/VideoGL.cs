@@ -42,15 +42,29 @@ public class VideoGL : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Alpha6)){
             StopPlay();
         }
+        if(Input.GetKeyDown(KeyCode.Alpha7)){
+            StopPlay();
+        }
     }
 
     void StopPlay(){
         Wall.Stop();
         Floor.Stop();
         Audio.Stop();
+        
+        ClearTextureToTransparent(Wall.targetTexture);
+        ClearTextureToTransparent(Floor.targetTexture);
+    }
 
-        Wall.targetTexture.Release();
-        Floor.targetTexture.Release();
+    private void ClearTextureToTransparent(RenderTexture renderTexture)
+    {
+        RenderTexture currentRT = RenderTexture.active;
+        
+        RenderTexture.active = renderTexture;
+        
+        GL.Clear(true, true, new Color(0, 0, 0, 0));
+        
+        RenderTexture.active = currentRT;
     }
 
     void SetupPlay(int index){
