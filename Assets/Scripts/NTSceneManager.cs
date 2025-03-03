@@ -5,6 +5,7 @@ public class NTSceneManager : MonoBehaviour
 {
     public static NTSceneManager instance;
     public UIStageIntro uiStageIntro;
+    public bool isMobile = false;
 
     void Awake(){
         if(instance == null){
@@ -24,6 +25,10 @@ public class NTSceneManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Alpha0)){
             SceneManager.LoadScene(2);
         }
+    }
+
+    public void UseMobile(){
+        isMobile = true;
     }
 
     public void LoadScene(int sceneIndex){

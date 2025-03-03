@@ -48,7 +48,7 @@ public class VideoGL : MonoBehaviour
         }
     }
 
-    void StopPlay(){
+    public void StopPlay(){
         Wall.Stop();
         Floor.Stop();
         Audio.Stop();
@@ -68,7 +68,7 @@ public class VideoGL : MonoBehaviour
         RenderTexture.active = currentRT;
     }
 
-    void SetupPlay(int index){
+    public void SetupPlay(int index){
         Wall.Stop();
         Floor.Stop();
         Audio.Stop();

@@ -29,6 +29,7 @@
 #endif
         <div id="unity-build-title">滑鼠右鍵開啟/關閉提示介面 | 台大&師大線上虛擬空間</div>
       </div>
+      <div id="unity-copyright">林晃巖、吳瑞北、羅禾淋、有電互動 © 2025</div>
     </div>
     <script>
       var canvas = document.querySelector("#unity-canvas");
@@ -138,6 +139,10 @@
           document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
               }).then((unityInstance) => {
                 document.querySelector("#unity-loading-bar").style.display = "none";
+                // Check mobile device
+                if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+                    unityInstance.SendMessage('NTSceneManager', 'UseMobile');
+                }
 #if SHOW_DIAGNOSTICS
                 document.getElementById("diagnostics-icon").onclick = () => {
                   unityDiagnostics.openDiagnosticsDiv(unityInstance.GetMetricsInfo);

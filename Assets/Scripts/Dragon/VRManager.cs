@@ -29,13 +29,21 @@ public class VRManager : MonoBehaviour
 
     }
 
+    public void BurstActionSwipe(){
+        snakeParticle.BurstActionSwipe();
+    }
+
+    public void SwitchManual(){
+        exhibitionModel.SwitchManual(exhibitionFadeTime);
+    }
+
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space)){
-            snakeParticle.BurstActionSwipe();
+            BurstActionSwipe();
         }
         if(Input.GetKeyDown(KeyCode.Return)){
-            exhibitionModel.SwitchManual(exhibitionFadeTime);
+            SwitchManual();
         }
         if(Input.GetKeyDown(KeyCode.B)){
             InteractMode.instance.SetGameMode(InteractMode.Mode.Dance);
